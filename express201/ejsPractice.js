@@ -7,9 +7,8 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use(helmet());
+app.use(helmet({contentSecurityPolicy: false}));
 
-app.use(express.static('public'))
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
@@ -21,6 +20,16 @@ app.get('/', (req, res) => {
         message3: 'This is caption'
     });
 });
+
+app.get('/app', (req, res) => {
+    res.render('index-3');
+});
+
+app.get('/about', (req, res) =>  {
+    res.render('about');
+})
+
+app.use(express.static('public'))
 
 app.listen(3000, () => {
     console.log('Server is listening on port 3000');
