@@ -15,14 +15,31 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(cookieParser());
 
+app.use((req, res, next) => {
+    let msg = req.query.msg;
+
+    if(msg === 'fail') {
+        res.locals.msg = 'Sorry, wrong credential';
+    } else {
+        res.locals.msg = ''
+    }
+
+    next();
+});
+
 app.get('/', (req, res) => {
     res.send('Homepage');
 });
 
 app.get('/login', (req, res) => {
-    res.render('login', {
-        msg: ''
-    });
+    // let msg = '';
+    // if(req.query.msg === 'fail') {
+    //     msg = 'Sorry, wrong credential';
+    // }
+    
+    // res.render('login', { msg });
+
+    res.render('login');
 });
 
 app.post('/process_login', (req, res) => {
