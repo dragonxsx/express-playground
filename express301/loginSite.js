@@ -63,6 +63,31 @@ app.get('/welcome', (req, res) => {
     });
 })
 
+app.param('linkId', (req, res, next, linkId) => {
+    console.log(linkId);
+
+    // Do the param validation for all linkId
+
+    next();
+})
+
+app.get('/story/:storyId', (req, res, next) => {
+    res.send(`<h1>Story ${req.params.storyId}</h1>`);
+});
+
+// The order of declaration matters
+// app.get('/story/:storyId/linkUrl', (req, res, next) => {
+//     res.send(`<h1>Story ${req.params.storyId} - ${req.params.linkId}</h1>`);
+// });
+
+app.get('/story/:storyId/:linkId', (req, res, next) => {
+    res.send(`<h1>Story ${req.params.storyId} - ${req.params.linkId}</h1>`);
+});
+
+// app.get('/story/:storyId/linkUrl', (req, res, next) => {
+//     res.send(`<h1>Story ${req.params.storyId} - ${req.params.linkId}</h1>`);
+// });
+
 app.get('/logout', (req, res) => {
     res.clearCookie('username');
     res.redirect('/login');
