@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+const { info } = require('console');
 
 const app = express();
 
@@ -87,6 +88,26 @@ app.get('/story/:storyId/:linkId', (req, res, next) => {
 // app.get('/story/:storyId/linkUrl', (req, res, next) => {
 //     res.send(`<h1>Story ${req.params.storyId} - ${req.params.linkId}</h1>`);
 // });
+
+app.get('/statement', (req, res, next) =>  {
+    // res.sendFile(path.join(__dirname, '/userStatements/BankStatementChequing.png'));
+
+    res.download(path.join(__dirname, '/userStatements/BankStatementChequing.png'), 'MyStatement.png', function(err) {
+        if(err) {
+            if(!res.headersSent) {
+                res.send({msg: 'Error sending file'});
+                // OR
+                // res.redirect('/download/error');
+            }
+            // Log error here
+        }
+
+        console.log('File downloaded');
+    });
+
+    // res.attachment('MyPersonalStatement.png');
+    // res.sendFile(path.join(__dirname, '/userStatements/BankStatementChequing.png'));
+});
 
 app.get('/logout', (req, res) => {
     res.clearCookie('username');
