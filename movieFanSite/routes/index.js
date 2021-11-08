@@ -8,21 +8,28 @@ const imageBaseUrl = 'http://image.tmdb.org/t/p/w300';
 
 const router = express.Router();
 
+router.use((req, res, next) => {
+  res.locals.imageBaseUrl = imageBaseUrl;
+  next();
+});
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   request.get(nowPlayingUrl, (err, response, bodyData) =>  {
-    console.log('============Error============');
-    console.log(err);
-    console.log('============Body============');
-    console.log(bodyData);
-    console.log('============Request============');
-    console.log(res);
+    // console.log('============Error============');
+    // console.log(err);
+    // console.log('============Body============');
+    // console.log(bodyData);
+    // console.log('============Request============');
+    // console.log(res);
 
-    res.json(JSON.parse(bodyData));
+    // res.json(JSON.parse(bodyData));
+
+    const parsedData = JSON.parse(bodyData);
+    res.render('index', {
+      parsedData: parsedData.results
+    });
   });
-
- 
-  // res.render('index', {});
 });
 
 module.exports = router;

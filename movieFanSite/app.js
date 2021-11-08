@@ -14,7 +14,21 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "https:", "'unsafe-inline'"],
+      fontSrc: ["'self'", "https:", "data:"],
+      imgSrc: ["'self'", "https://image.tmdb.org"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      blockAllMixedContent: [],
+      upgradeInsecureRequests: [],
+      baseUri: ["'self'"],
+      frameAncestors: ["'self'"],
+    }
+  }
+}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
