@@ -21,7 +21,7 @@ app.use(helmet({
       styleSrc: ["'self'", "https:", "'unsafe-inline'"],
       fontSrc: ["'self'", "https:", "data:"],
       imgSrc: ["'self'", "https://image.tmdb.org"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", 'maxcdn.bootstrapcdn.com', 'ajax.googleapis.com'],
       blockAllMixedContent: [],
       upgradeInsecureRequests: [],
       baseUri: ["'self'"],

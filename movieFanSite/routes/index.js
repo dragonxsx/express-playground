@@ -1,3 +1,4 @@
+const { response } = require('express');
 const express = require('express');
 const request = require('request');
 
@@ -30,6 +31,19 @@ router.get('/', function(req, res, next) {
       parsedData: parsedData.results
     });
   });
+});
+
+router.get('/movies/:id', (req, res) => {
+  const movieId = req.params.id;
+  const movieUrl = `${apiBaseUrl}/movie/${movieId}?api_key=${apiKey}`;
+  
+  request(movieUrl, (err, response, bodyData) => {
+    const parsedData = JSON.parse(bodyData);
+
+    res.render('single-movie', {
+      parsedData
+    })
+  })
 });
 
 module.exports = router;
