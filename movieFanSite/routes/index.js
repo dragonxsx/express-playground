@@ -46,4 +46,22 @@ router.get('/movies/:id', (req, res) => {
   })
 });
 
+router.post('/search', (req, res, next) => {
+  const cat = req.body.cat;
+  const searchString = req.body.movieSearch;
+  const searchUrl = `${apiBaseUrl}/search/${cat}?query=${encodeURI(searchString)}&api_key=${apiKey}`;
+
+  request(searchUrl, (err, response, bodyData) => {
+    const parsedData = JSON.parse(bodyData);
+
+    if(cat === "person") {
+      parsedData.results = parsedData.results[0].known_for;
+    }
+
+    res.render('index', {
+      parsedData: parsedData.results
+    });
+  });
+});
+
 module.exports = router;
