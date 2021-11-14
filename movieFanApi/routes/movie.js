@@ -8,12 +8,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Movie' });
 });
 
-router.get('/most_popular', function(req, res, next) {
-  const api_key = req.query.api_key;
-  if(api_key != 123456) {
-    return res.json("Invalid api_key");
-  }
-  
+router.get('/most_popular', function(req, res, next) {  
   let page = req.query.page;
   if(page === undefined) page = 1;
 
