@@ -5,7 +5,15 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const helmet = require('helmet');
 
+const session = require('express-session');
+// ================= Passport files =================
+const passport = require('passport');
+const GithubStrategy = require('passport-github2').Strategy;
+const githubConfig = require('./github.config');
+// ================= Passport files =================
+
 var indexRouter = require('./routes/index');
+
 
 var app = express();
 
@@ -28,6 +36,38 @@ app.use(helmet({
     }
   }
 }));
+
+app.use(session({ 
+  resave: false,
+  saveUninitialized: true,
+  // cookie: { secure: true },
+  secret: 'Passport application secret' 
+}));
+
+// ================= Passport config =================
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new GithubStrategy(githubConfig, 
+  function(accessToken, refreshToken, profile, cb){
+    // console.log(profile);
+
+    // Trying to find the user and verify them by using cb
+    cb(null, profile);
+}));
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  // User.findById(id, function(err, user) {
+  //   done(err, user);
+  // });
+  done(null, user);
+});
+// ================= Passport config =================
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
