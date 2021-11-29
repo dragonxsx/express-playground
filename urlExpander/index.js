@@ -1,6 +1,6 @@
 const express = require('express');
 const helmet = require('helmet');
-const request = require('request');
+const fetch = require('node-fetch');
 
 const app = express();
 
@@ -11,21 +11,18 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname, 'index.html');
 });
 
-app.get('/expand', (req, res) => {
+app.get('/expand', async (req, res) => {
     let shortUrl = req.query.shortUrl;
 
     if(!shortUrl.startsWith('http')) shortUrl = 'https://' + shortUrl;
-    request({
-        url: shortUrl,
-        method: 'HEAD',
-        followAllRedirects: true
-    }, (err, response, body) => {
-        if(err) { 
-            return res.status(400).send('Error');
-        }
-        
-        res.send(response.request.href);
-    });
+    try {
+        const response = await fetch(shortUrl, {
+            method: 'HEAD'
+        });
+        res.send(response.url);
+    } catch (e) {
+        res.status(400).send('Error');
+    }
 });
 
 app.listen(3000, () => {
