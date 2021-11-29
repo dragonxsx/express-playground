@@ -7,7 +7,7 @@ app.use(helmet());
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-    res.json("The server is running");
+    res.sendFile(__dirname, 'index.html');
 })
 
 app.listen(3000, () => {
